@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClassCatch Test Bench</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --card:#0b1220; --cardBorder:#1f2a3a; --ink:#cbd6e2; --muted:#8aa0b9; --accent:#06b6d4; }
+    body { background:#0a1019; color:var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial; }
+    .container { max-width:1100px; margin:0 auto; padding:24px; }
+    .title { font-weight:700; font-size:28px; letter-spacing:.2px; margin-bottom:4px; }
+    .subtitle { color:var(--muted); margin-bottom:24px; }
+    .grid { display:grid; grid-template-columns: 340px 1fr; gap:18px; align-items:start; }
+    .card { background:var(--card); border:1px solid var(--cardBorder); border-radius:14px; padding:16px; box-shadow: 0 12px 32px rgba(0,0,0,.3); }
+    .card h2 { font-size:14px; text-transform:uppercase; letter-spacing:.8px; color:#94a3b8; margin:0 0 12px; }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:10px; border:1px solid #223145; background:#0e1826; color:#d9e3ef; cursor:pointer; }
+    .btn.primary { border-color: var(--accent); background:#0b2a31; color:#e6fbff; }
+    .btn:disabled { opacity:.6; cursor:not-allowed; }
+    .stack { display:flex; flex-wrap:wrap; gap:10px; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; }
+    .result { background:#0a1524; border:1px solid #1e3048; border-radius:10px; padding:12px; white-space:pre-wrap; font-size:12px; color:#cfe5ff; }
+    .pill { display:inline-block; padding:4px 8px; border-radius:999px; background:#102238; border:1px solid #1f3552; color:#cfe5ff; font-size:12px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">ClassCatch Test Bench</div>
+    <div class="subtitle">Compare Tailwind vs plain CSS rendering. Hover (desktop) or tap (mobile) samples.</div>
+    
+    <div class="card">
+        <h2>Playground</h2>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px;">
+          <div>
+            <div style="font-weight:600; margin-bottom:6px; color:#a7c0de;">Tailwind Element</div>
+            <div class="bg-sky-600/90 text-white p-4 rounded-xl shadow-lg">
+              <div class="text-lg font-semibold mb-1">Button</div>
+              <button class="bg-white text-sky-700 px-4 py-2 rounded-md text-sm font-medium">Tailwind Button</button>
+            </div>
+          </div>
+          <div>
+            <div style="font-weight:600; margin-bottom:6px; color:#a7c0de;">Non‑Tailwind Element</div>
+            <div id="css-card" style="background:#f1f5f9;color:#0f172a;padding:16px;border-radius:12px;box-shadow:0 10px 30px rgba(2,6,23,.15);">
+              <div style="font-size:18px;font-weight:600;margin-bottom:6px;">CSS Button</div>
+              <button style="background:#0ea5e9;color:#fff;padding:8px 14px;border-radius:8px;border:1px solid #0284c7;font-size:13px;">CSS Styled</button>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:16px; color:#9fb3c8; font-size:13px;">Hover (desktop) or tap (mobile) elements above to see tooltip and copy options. Use the controls to observe gating behavior.</div>
+      </div>
+    
+  </div>
+
+  <script></script>
+</body>
+</html>
