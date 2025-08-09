@@ -48,35 +48,6 @@ classCatch is a Chrome extension that lets you hover over any element on a webpa
 - Priority support
 - Support future development
 
-## Gumroad Setup
-
-### For Users
-
-1. Purchase classCatch Pro from our [Gumroad page](#)
-2. You'll receive a license key via email
-3. Open the classCatch popup and enter your license key and the product permalink
-4. Click "Verify License" to unlock Pro features
-
-### For Developers
-
-1. Create a product on Gumroad
-2. Get your product permalink (the part after gumroad.com/l/ in your product URL)
-3. Update the GitHub link and Gumroad link in the extension files
-4. Test license verification with your own license key
-
-## Chrome Web Store Submission
-
-1. Create a ZIP file of the `classCatch` directory
-2. Create a developer account on the [Chrome Web Store](https://chrome.google.com/webstore/devconsole/)
-3. Pay the one-time developer fee ($5 USD)
-4. Create a new item and upload your ZIP file
-5. Fill in all required information, including:
-   - Description
-   - Screenshots
-   - Privacy policy
-   - Store listing details
-6. Submit for review
-
 ## Privacy Note
 
 classCatch does not collect any analytics or user data. The only external API call made is to Gumroad's license verification API when verifying a Pro license.
