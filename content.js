@@ -820,7 +820,8 @@ let pageGateBlocked = false;
       // Create tooltip content
       let content = `
         <style>
-          .button {
+          /* Button styles - scoped to buttons only */
+          .cc-button {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -836,24 +837,143 @@ let pageGateBlocked = false;
             margin-right: 8px;
             margin-bottom: 8px;
           }
-          .button:hover {
+          .cc-button:hover {
             background: rgba(51,65,85,0.9);
             border-color: rgba(148,163,184,0.5);
           }
-          .button.primary {
+          .cc-button.primary {
             background: rgba(6,182,212,0.2);
             border-color: rgba(6,182,212,0.4);
             color: #06b6d4;
           }
-          .button.primary:hover {
+          .cc-button.primary:hover {
             background: rgba(6,182,212,0.3);
             border-color: rgba(6,182,212,0.6);
           }
-          .buttons {
+          .cc-buttons {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
             margin-top: 12px;
+          }
+          
+          /* CSS Properties styles */
+          .css-props {
+            margin-top: 8px;
+            font-size: 11px;
+            color: #cbd5e1;
+            background: transparent !important;
+            max-height: 200px;
+            overflow-y: auto;
+            padding-right: 8px;
+          }
+          .css-props::-webkit-scrollbar {
+            width: 4px;
+          }
+          .css-props::-webkit-scrollbar-track {
+            background: rgba(30,41,59,0.3);
+            border-radius: 2px;
+          }
+          .css-props::-webkit-scrollbar-thumb {
+            background: rgba(148,163,184,0.4);
+            border-radius: 2px;
+          }
+          .css-props::-webkit-scrollbar-thumb:hover {
+            background: rgba(148,163,184,0.6);
+          }
+          .css-category {
+            margin-bottom: 8px;
+          }
+          .category-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+          .category-name.layout {
+            color: #06b6d4; /* Cyan for Layout */
+          }
+          .category-name.spacing {
+            color: #10b981; /* Green for Spacing */
+          }
+          .category-name.size {
+            color: #f59e0b; /* Amber for Size */
+          }
+          .category-name.typography {
+            color: #8b5cf6; /* Purple for Typography */
+          }
+          .category-name.color {
+            color: #ef4444; /* Red for Color */
+          }
+          .category-name.border {
+            color: #f97316; /* Orange for Border */
+          }
+          .css-prop {
+            display: flex;
+            margin-bottom: 2px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+          }
+          .prop-name {
+            color: #94a3b8;
+            margin-right: 8px;
+            min-width: 80px;
+          }
+          .prop-value {
+            color: #475569 !important;
+            flex: 1;
+          }
+          #classCatch-tooltip .prop-value {
+            color: #475569 !important;
+          }
+          .classes {
+            background: rgba(30,41,59,0.5);
+            border: 1px solid rgba(148,163,184,0.2);
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 11px;
+            color: #e5e7eb;
+            margin-bottom: 8px;
+            word-break: break-all;
+          }
+          
+          /* Header styles */
+          .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(148,163,184,0.2);
+          }
+          .logo {
+            font-weight: 600;
+            font-size: 14px;
+            color: #06b6d4;
+          }
+          .type {
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 500;
+          }
+          
+          /* Details and summary styles */
+          details {
+            margin-top: 8px;
+            background: transparent !important;
+          }
+          summary {
+            font-size: 12px;
+            color: #e5e7eb !important;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 4px 0;
+            user-select: none;
+            background: transparent !important;
+          }
+          summary:hover {
+            color: #06b6d4 !important;
           }
         </style>
         <div class="header">
@@ -868,13 +988,9 @@ let pageGateBlocked = false;
         content += `<div class="classes">${classes}</div>`;
       }
       
-      // Add CSS details section
+      // Add CSS properties section directly
       if (type === 'css' || type === 'converted') {
-        content += `
-          <details>
-            <summary>CSS Properties</summary>
-            <div class="css-props">
-        `;
+        content += `<div class="css-props">`;
         
         // Group properties by category
         const categories = {
@@ -891,7 +1007,8 @@ let pageGateBlocked = false;
           const categoryProps = props.filter(prop => css[prop] && css[prop] !== 'none' && css[prop] !== 'normal');
           
           if (categoryProps.length > 0) {
-            content += `<div class="css-category"><div class="category-name">${category}</div>`;
+            const categoryClass = category.toLowerCase();
+            content += `<div class="css-category"><div class="category-name ${categoryClass}">${category}</div>`;
             
             categoryProps.forEach(prop => {
               content += `
@@ -906,23 +1023,23 @@ let pageGateBlocked = false;
           }
         });
         
-        content += '</div></details>';
+        content += '</div>';
       }
       
       // Add buttons
       content += `
-        <div class="buttons">
+        <div class="cc-buttons">
       `;
       
       if (type === 'tailwind') {
-        content += `<div class="button primary" id="copy-tailwind">Copy Tailwind</div>`;
-        content += `<div class="button" id="copy-css">Copy as CSS</div>`;
+        content += `<div class="cc-button primary" id="copy-tailwind">Copy Tailwind</div>`;
+        content += `<div class="cc-button" id="copy-css">Copy as CSS</div>`;
       } else if (type === 'converted') {
-        content += `<div class="button primary" id="copy-converted">Copy Tailwind</div>`;
-        content += `<div class="button" id="copy-css">Copy as CSS</div>`;
+        content += `<div class="cc-button primary" id="copy-converted">Copy Tailwind</div>`;
+        content += `<div class="cc-button" id="copy-css">Copy as CSS</div>`;
       } else {
-        content += `<div class="button" id="copy-converted">Copy as Tailwind</div>`;
-        content += `<div class="button primary" id="copy-css">Copy CSS</div>`;
+        content += `<div class="cc-button" id="copy-converted">Copy as Tailwind</div>`;
+        content += `<div class="cc-button primary" id="copy-css">Copy CSS</div>`;
       }
       
       content += '</div>';
