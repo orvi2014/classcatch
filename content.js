@@ -262,7 +262,7 @@ async function gatePageQuota() {
 }
 
 // Handle button click (copy to clipboard)
-async function handleButtonClick(type, element, classes, css) {
+async function handleButtonClick(type, element, classes, css, buttonElement = null) {
   // Check if extension context is valid
   if (!isExtensionContextValid()) {
     console.log('Extension context not available, allowing copy without quota check');
@@ -288,6 +288,27 @@ async function handleButtonClick(type, element, classes, css) {
   try {
     await navigator.clipboard.writeText(textToCopy);
     console.log(`Copied ${type} to clipboard:`, textToCopy);
+    
+    // Show visual feedback on button if provided
+    if (buttonElement) {
+      const originalText = buttonElement.textContent;
+      const originalBackground = buttonElement.style.background;
+      const originalBorderColor = buttonElement.style.borderColor;
+      const originalColor = buttonElement.style.color;
+      
+      buttonElement.textContent = 'Copied!';
+      buttonElement.style.background = '#10b981'; // Green background
+      buttonElement.style.borderColor = '#10b981';
+      buttonElement.style.color = '#ffffff'; // White text for visibility
+      
+      // Reset after 1.5 seconds
+      setTimeout(() => {
+        buttonElement.textContent = originalText;
+        buttonElement.style.background = originalBackground;
+        buttonElement.style.borderColor = originalBorderColor;
+        buttonElement.style.color = originalColor;
+      }, 1500);
+    }
     
     // Show toast with remaining pages (only once per page)
     if (!toastShownForThisPage && isExtensionContextValid()) {
@@ -798,6 +819,43 @@ let pageGateBlocked = false;
       
       // Create tooltip content
       let content = `
+        <style>
+          .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(148,163,184,0.3);
+            background: rgba(30,41,59,0.8);
+            color: #e5e7eb;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            margin-right: 8px;
+            margin-bottom: 8px;
+          }
+          .button:hover {
+            background: rgba(51,65,85,0.9);
+            border-color: rgba(148,163,184,0.5);
+          }
+          .button.primary {
+            background: rgba(6,182,212,0.2);
+            border-color: rgba(6,182,212,0.4);
+            color: #06b6d4;
+          }
+          .button.primary:hover {
+            background: rgba(6,182,212,0.3);
+            border-color: rgba(6,182,212,0.6);
+          }
+          .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+          }
+        </style>
         <div class="header">
           <div class="logo">ClassCatch</div>
           <div class="type">${type === 'tailwind' ? 'Tailwind Classes' : type === 'converted' ? 'Converted to Tailwind' : 'CSS Properties'}</div>
@@ -903,7 +961,7 @@ let pageGateBlocked = false;
            copyTailwindBtn.addEventListener('click', function(e) {
              e.preventDefault();
              e.stopPropagation();
-             handleButtonClick('tailwind', element, classes, css);
+             handleButtonClick('tailwind', element, classes, css, this);
            });
          }
          
@@ -911,7 +969,7 @@ let pageGateBlocked = false;
            copyConvertedBtn.addEventListener('click', function(e) {
              e.preventDefault();
              e.stopPropagation();
-             handleButtonClick('converted', element, classes, css);
+             handleButtonClick('converted', element, classes, css, this);
            });
          }
          
@@ -919,7 +977,7 @@ let pageGateBlocked = false;
            copyCssBtn.addEventListener('click', function(e) {
              e.preventDefault();
              e.stopPropagation();
-             handleButtonClick('css', element, classes, css);
+             handleButtonClick('css', element, classes, css, this);
            });
          }
       }
